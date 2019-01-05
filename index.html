@@ -1,7 +1,49 @@
 <!DOCTYPE html>
 <html>
+<style>
+  body {
+	background-color: #2a2a2a;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+
+.hidden { display: none; }
+
+.absoluteCenter {
+	position: absolute;
+	top: 0;	right: 0; bottom: 0; left: 0;
+	margin: auto;
+}
+
+/*  Animation Spin START  */
+
+	@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+	@keyframes spin { 100% { transform: rotate(360deg); } }
+
+	#spectrum {
+		-webkit-animation: spin 2s linear infinite;
+		animation: spin 2s linear infinite;
+	}
+
+/*  Animation Spin END  */
+
+/* Responsive (New version) */
+.imgCenter { width: 80vmin; }
+#spectrum { width: 79vmin; }
+  </style>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <!-- Image Spectrum -->
+    <img id="spectrum" class="imgCenter hidden absoluteCenter" src="https://dcy.000webhostapp.com/projects/flower_of_life/images/spectrum.png">
+
+    <!-- SVG Flower of Life Mask -->
+    <img id="mask" class="imgCenter hidden absoluteCenter" src="https://dcy.000webhostapp.com/projects/flower_of_life/images/mask.svg">
 </body>
+<script>
+  // When the page has fully loaded
+window.onload = function() {
+	// jQuery: Delay & Fade In Stuff
+	$("#spectrum, #mask").delay(200).fadeIn(1000);
+}
+  </script>
 </html>

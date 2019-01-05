@@ -1,49 +1,124 @@
 <!DOCTYPE html>
 <html>
 <style>
-  body {
-	background-color: #2a2a2a;
-	overflow: hidden;
-	margin: 0;
-	padding: 0;
+body {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: hsla(0, 0%, 10%, 1);
 }
-
-.hidden { display: none; }
-
-.absoluteCenter {
-	position: absolute;
-	top: 0;	right: 0; bottom: 0; left: 0;
-	margin: auto;
-}
-
-/*  Animation Spin START  */
-
-	@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-	@keyframes spin { 100% { transform: rotate(360deg); } }
-
-	#spectrum {
-		-webkit-animation: spin 2s linear infinite;
-		animation: spin 2s linear infinite;
-	}
-
-/*  Animation Spin END  */
-
-/* Responsive (New version) */
-.imgCenter { width: 80vmin; }
-#spectrum { width: 79vmin; }
   </style>
 <body>
-    <!-- Image Spectrum -->
-    <img id="spectrum" class="imgCenter hidden absoluteCenter" src="https://dcy.000webhostapp.com/projects/flower_of_life/images/spectrum.png">
-
-    <!-- SVG Flower of Life Mask -->
-    <img id="mask" class="imgCenter hidden absoluteCenter" src="https://dcy.000webhostapp.com/projects/flower_of_life/images/mask.svg">
+<canvas id='canv'></canvas>
 </body>
 <script>
-  // When the page has fully loaded
-window.onload = function() {
-	// jQuery: Delay & Fade In Stuff
-	$("#spectrum, #mask").delay(200).fadeIn(1000);
+window.requestAnimFrame = (function() {
+  return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+})();
+
+var c = document.getElementById('canv');
+c.width = window.innerWidth;
+c.height = window.innerHeight;
+
+var $ = c.getContext('2d');
+var i = 0;
+var tri = {
+  obj: {
+    num: 6,
+    step: Math.PI / 100,
+    rad: 130
+  },
+
+  draw_: function($) {
+   var rot = Math.sin(2)* 360 + 5;
+    $.beginPath();
+    $.fillStyle = 'hsla(' + i + ', 80%, 50%,1)';
+    $.arc(-102,-102, 1, 0, Math.PI*2);
+    $.closePath();
+    $.fill();
+    for (var n = 0; n < 10; ++n) {
+      $.beginPath();
+      $.rotate(rot);
+      $.fillStyle = 'hsla(' + i * 2 + ', 80%, 50%,1)';
+      $.arc(-103, -103, 1.5, 0, Math.PI * 2);
+      $.closePath();
+      $.fill();
+
+      $.beginPath();
+      $.rotate(-190);
+      $.fillStyle = 'hsla(' + i * 3 + ', 80%, 50%,1)';
+      $.fillRect(4, 4, 1, 20);
+      $.closePath();
+      $.fill();
+    }
+    $.fillStyle = 'hsla(' + i * 4 + ',80%, 40%,1)';
+    $.rotate(rot);
+
+    $.arc(101, 101, 2, 0, Math.PI*2);
+    $.fill();
+    $.fillStyle = 'hsla(' + i * 5 + ', 100%, 50%,1)';
+    $.arc(100, 100, 3, 0, Math.PI*2);
+    $.fill();
+
+  }
+};
+
+function Obj(mid, off_, step) {
+  this.mid = mid;
+  this.off_ = off_;
+  this.step = step;
 }
+
+Obj.prototype.draw = function($) {
+  this.step += tri.obj.step;
+  $.save();
+  $.translate(this.mid.x, this.mid.y);
+  $.rotate(this.step + this.off_);
+  tri.draw_($);
+  $.restore();
+
+};
+
+var arr = [];
+for (var i = 0; i < tri.obj.num; i++) {
+
+  var t = i * Math.PI * 2 / tri.obj.num;
+  arr.push(new Obj({
+    x: c.width / 2 + tri.obj.rad * Math.cos(t),
+    y: c.height / 2 + tri.obj.rad * Math.sin(t)
+  }, t, Math.PI * i * 2));
+}
+
+var go = function() {
+  $.save();
+
+  $.fillStyle = 'hsla(0,0%,0%,.22)';
+  $.fillRect(0, 0, c.width, c.height);
+
+  for (var i in arr) {
+    arr[i].draw($);
+  }
+  $.restore();
+}
+
+var run = function() {
+  window.requestAnimFrame(run);
+  go();
+  i -= .5;
+}
+
+window.addEventListener('resize', function() {
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+}, false);
+
+run();
   </script>
 </html>

@@ -39,34 +39,21 @@ var tri = {
   draw_: function($) {
    var rot = Math.sin(2)* 360 + 5;
     $.beginPath();
-    $.fillStyle = 'hsla(' + i + ', 80%, 50%,1)';
+    $.fillStyle = 'hsla(239, 100%, 14%, 1)';
     $.arc(-102,-102, 1, 0, Math.PI*2);
     $.closePath();
     $.fill();
     for (var n = 0; n < 10; ++n) {
       $.beginPath();
       $.rotate(rot);
-      $.fillStyle = 'hsla(' + i * 2 + ', 80%, 50%,1)';
+      $.fillStyle = 'hsla(239, 100%, 14%, 1)';
       $.arc(-103, -103, 1.5, 0, Math.PI * 2);
       $.closePath();
       $.fill();
 
-      $.beginPath();
-      $.rotate(-190);
-      $.fillStyle = 'hsla(' + i * 3 + ', 80%, 50%,1)';
-      $.fillRect(4, 4, 1, 20);
-      $.closePath();
-      $.fill();
     }
-    $.fillStyle = 'hsla(' + i * 4 + ',80%, 40%,1)';
+    $.fillStyle = 'hsla(239, 100%, 14%, 1)';
     $.rotate(rot);
-
-    $.arc(101, 101, 2, 0, Math.PI*2);
-    $.fill();
-    $.fillStyle = 'hsla(' + i * 5 + ', 100%, 50%,1)';
-    $.arc(100, 100, 3, 0, Math.PI*2);
-    $.fill();
-
   }
 };
 
@@ -101,6 +88,10 @@ var go = function() {
 
   $.fillStyle = 'hsla(0,0%,0%,.22)';
   $.fillRect(0, 0, c.width, c.height);
+
+  for (var i in arr) {
+    arr[i].draw($);
+  }
   $.restore();
 }
 
@@ -116,5 +107,5 @@ window.addEventListener('resize', function() {
 }, false);
 
 run();
-  </script>
+</script>
 </html>

@@ -7,9 +7,17 @@ body {
   overflow: hidden;
   background: hsla(0, 0%, 10%, 1);
 }
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
   </style>
 <body>
 <canvas id='canv'></canvas>
+<img src="logo3.png" class="centered">
 </body>
 <script>
 window.requestAnimFrame = (function() {
